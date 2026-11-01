@@ -5,28 +5,26 @@ import { socialMediaLinks } from "@/lib/data/socialmedialink";
 
 export function ContactSocials() {
   return (
-    <div className="pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-primary-foreground/20">
-      <div className="flex flex-col gap-4">
-        {/* Email */}
+    <div className="mt-6 border-t border-paper/15 pt-6">
+      <div className="flex flex-col gap-5">
         <div>
-          <p className="text-sm text-primary-foreground/70 mb-1">
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-paper/40">
             {contactInfo.emailLabel}
           </p>
           <Link
             href={`mailto:${contactInfo.email}`}
-            className="text-base sm:text-lg text-primary-foreground hover:underline flex items-center gap-2"
+            className="mt-2 flex w-fit items-center gap-2 text-[13.5px] font-bold text-paper transition hover:text-marigold"
           >
-            <CiMail className="w-5 h-5" />
+            <CiMail className="h-4 w-4" />
             {contactInfo.email}
           </Link>
         </div>
 
-        {/* Socials */}
         <div>
-          <p className="text-sm text-primary-foreground/70 mb-2">
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-paper/40">
             Follow us
           </p>
-          <div className="flex gap-3">
+          <div className="mt-2.5 flex gap-2">
             {socialMediaLinks.map((social) => {
               const Icon = social.icon;
               return (
@@ -35,10 +33,10 @@ export function ContactSocials() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-foreground hover:text-primary-foreground/70 transition"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-paper/25 bg-paper/5 text-paper transition hover:-translate-y-0.5 hover:border-marigold hover:bg-marigold hover:text-ink"
                   aria-label={social.ariaLabel}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="h-4 w-4" />
                 </Link>
               );
             })}

@@ -27,53 +27,28 @@ function VercelCard({
   return (
     <motion.div
       className={cn(
-        "group/canvas-card relative flex flex-col items-center justify-center w-full h-full min-h-[200px]",
-        bordered &&
-          "border border-black/[0.2] dark:border-white/[0.2]",
+        "group/canvas-card relative flex h-full w-full flex-col overflow-hidden",
+        bordered && "stamp rounded-[40px] border border-ink/25 bg-parchment",
         className
       )}
-      whileHover={animateOnHover ? { scale: 1.02 } : {}}
-      transition={{ duration: 0.3 }}
+      whileHover={animateOnHover ? { y: -4 } : {}}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       {...props}
     >
       {showIcons && (
         <>
-          <Icon
-            className={cn(
-              "absolute -left-3 -top-3 h-6 w-6 text-black dark:text-white",
-              iconClassName
-            )}
-          />
-          <Icon
-            className={cn(
-              "absolute -bottom-3 -left-3 h-6 w-6 text-black dark:text-white",
-              iconClassName
-            )}
-          />
-          <Icon
-            className={cn(
-              "absolute -right-3 -top-3 h-6 w-6 text-black dark:text-white",
-              iconClassName
-            )}
-          />
-          <Icon
-            className={cn(
-              "absolute -bottom-3 -right-3 h-6 w-6 text-black dark:text-white",
-              iconClassName
-            )}
-          />
+          <Icon className={cn("absolute -left-3 -top-3 h-6 w-6 text-ink/25", iconClassName)} />
+          <Icon className={cn("absolute -bottom-3 -left-3 h-6 w-6 text-ink/25", iconClassName)} />
+          <Icon className={cn("absolute -right-3 -top-3 h-6 w-6 text-ink/25", iconClassName)} />
+          <Icon className={cn("absolute -bottom-3 -right-3 h-6 w-6 text-ink/25", iconClassName)} />
         </>
       )}
 
       {glowEffect && (
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-0 blur-xl transition-opacity duration-500 group-hover/canvas-card:opacity-100"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-        />
+        <div className="pointer-events-none absolute inset-0 bg-marigold/20 opacity-0 transition-opacity duration-500 group-hover/canvas-card:opacity-100" />
       )}
 
-      <div className={cn("relative h-full w-full p-6 flex flex-col items-center justify-center", contentClassName)}>
+      <div className={cn("relative flex h-full w-full flex-col p-6", contentClassName)}>
         {children}
       </div>
     </motion.div>
