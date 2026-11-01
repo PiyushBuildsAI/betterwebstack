@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Check, Zap, Sparkles, Crown } from "lucide-react";
 import Link from "next/link";
+import { Check, Crown, Sparkles, Zap } from "lucide-react";
+import { Sparkle } from "@/components/brand/Botanical";
+import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Currency = "INR" | "USD";
 
@@ -31,7 +28,6 @@ export default function SolutionPricing({ features }: SolutionPricingProps) {
       period: "one-time",
       icon: Zap,
       popular: false,
-      variant: "outline" as const,
       features: features.starter,
       cta: "Get Started",
     },
@@ -42,7 +38,6 @@ export default function SolutionPricing({ features }: SolutionPricingProps) {
       period: "one-time",
       icon: Sparkles,
       popular: true,
-      variant: "default" as const,
       features: features.growth,
       cta: "Book Free Call",
     },
@@ -53,92 +48,149 @@ export default function SolutionPricing({ features }: SolutionPricingProps) {
       period: "quote",
       icon: Crown,
       popular: false,
-      variant: "outline" as const,
       features: features.enterprise,
       cta: "Request Quote",
     },
   ];
 
   return (
-    <section className="w-full py-24 px-4 bg-muted/20" id="pricing">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <Badge variant="outline" className="mb-4 px-4 py-1 text-sm">Pricing</Badge>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">Transparent Pricing</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
+    <section
+      id="pricing"
+      className="relative w-full overflow-hidden border-y border-ink bg-sage px-5 py-20 sm:px-8"
+    >
+      <div className="pointer-events-none absolute inset-0 sunlit-dots opacity-30" />
+      <div className="relative mx-auto max-w-6xl">
+        <div className="mb-12 text-center">
+          <span className="pill mx-auto">
+            <Sparkle className="h-3 w-3 text-ink" />
+            Pricing
+          </span>
+          <h2 className="display mx-auto mt-4 max-w-[16ch] text-[42px] uppercase leading-[0.9] sm:text-[54px]">
+            Transparent Pricing
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-[14px] font-medium leading-relaxed text-ink/65">
             Simple packages with clear deliverables. Choose what fits your business today.
           </p>
-          <div className="flex items-center justify-center gap-3">
-            <Label
-              htmlFor="currency-toggle-solution"
-              className={`text-sm font-medium cursor-pointer ${currency === "INR" ? "text-primary" : "text-muted-foreground"}`}
-              onClick={() => setCurrency("INR")}
-            >
-              INR (₹)
-            </Label>
-            <Switch
-              id="currency-toggle-solution"
-              checked={currency === "USD"}
-              onCheckedChange={(checked) => setCurrency(checked ? "USD" : "INR")}
-            />
-            <Label
-              htmlFor="currency-toggle-solution"
-              className={`text-sm font-medium cursor-pointer ${currency === "USD" ? "text-primary" : "text-muted-foreground"}`}
-              onClick={() => setCurrency("USD")}
-            >
-              USD ($)
-            </Label>
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {(["INR", "USD"] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setCurrency(option)}
+                aria-pressed={currency === option}
+                className={cn(
+                  "rounded-full border px-4 py-2 text-[12px] font-bold transition",
+                  currency === option
+                    ? "border-ink bg-ink text-parchment"
+                    : "border-ink/30 bg-parchment text-ink/60 hover:border-ink/60 hover:text-ink"
+                )}
+              >
+                {option === "INR" ? "INR (₹)" : "USD ($)"}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {tiers.map((tier, i) => (
-            <Card
-              key={i}
-              className={`relative flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
-                tier.popular
-                  ? "border-primary shadow-lg shadow-primary/10 scale-[1.02] md:scale-105"
-                  : "border-border/50 hover:border-border"
-              }`}
-            >
-              {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge className="px-4 py-1 bg-primary text-primary-foreground">Most Popular</Badge>
-                </div>
-              )}
-              <CardHeader className="text-center pb-2">
-                <div className="mx-auto mb-4 p-3 rounded-full bg-muted w-fit">
-                  <tier.icon className={`h-6 w-6 ${tier.popular ? "text-primary" : "text-muted-foreground"}`} />
-                </div>
-                <CardTitle className="text-2xl">{tier.name}</CardTitle>
-                <CardDescription className="text-sm">{tier.description}</CardDescription>
-              </CardHeader>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-7">
+          {tiers.map((tier) => {
+            const Icon = tier.icon;
+            return (
+              <div
+                key={tier.name}
+                className={cn(
+                  "relative flex flex-col rounded-[40px] border p-6 transition-transform duration-300 hover:-translate-y-1",
+                  tier.popular
+                    ? "stamp border-ink bg-ink text-parchment"
+                    : "border-ink/40 bg-parchment text-ink"
+                )}
+              >
+                {tier.popular && (
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-ink bg-marigold px-4 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-ink">
+                    Most Popular
+                  </span>
+                )}
 
-              <CardContent className="flex-1">
-                <div className="text-center mb-6">
-                  <span className="text-4xl font-bold">{tier.price[currency]}</span>
+                <div className="text-center">
+                  <span
+                    className={cn(
+                      "mx-auto flex h-12 w-12 items-center justify-center rounded-full border",
+                      tier.popular
+                        ? "border-marigold bg-marigold text-ink"
+                        : "border-ink/25 bg-sage text-ink"
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-4 text-[24px] font-semibold uppercase tracking-[0.01em]">
+                    {tier.name}
+                  </h3>
+                  <p
+                    className={cn(
+                      "mt-1 text-[12px] font-medium",
+                      tier.popular ? "text-parchment/60" : "text-ink/55"
+                    )}
+                  >
+                    {tier.description}
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    "my-5 border-y py-4 text-center",
+                    tier.popular ? "border-paper/20" : "border-ink/15"
+                  )}
+                >
+                  <span className="display text-[40px] leading-none">{tier.price[currency]}</span>
                   {tier.period !== "quote" && (
-                    <span className="text-muted-foreground ml-1">/{tier.period}</span>
+                    <span
+                      className={cn(
+                        "ml-1 font-mono text-[10px] uppercase tracking-[0.1em]",
+                        tier.popular ? "text-parchment/50" : "text-ink/45"
+                      )}
+                    >
+                      /{tier.period}
+                    </span>
                   )}
                 </div>
-                <Separator className="mb-6" />
-                <ul className="space-y-3">
-                  {tier.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <Check className={`h-5 w-5 shrink-0 ${tier.popular ? "text-primary" : "text-green-500"}`} />
-                      <span className="text-sm text-muted-foreground">{feature}</span>
+
+                <ul className="flex-1 space-y-2.5">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-marigold">
+                        <Check className="h-2.5 w-2.5 text-ink" strokeWidth={4} />
+                      </span>
+                      <span
+                        className={cn(
+                          "text-[12.5px] font-medium leading-snug",
+                          tier.popular ? "text-parchment/80" : "text-ink/70"
+                        )}
+                      >
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
-              </CardContent>
 
-              <CardFooter className="flex flex-col gap-3">
-                <Button variant={tier.variant} className={`w-full ${tier.popular ? "shadow-md" : ""}`} size="lg" asChild>
-                  <Link href="/contact">{tier.cta}</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                <Link
+                  href="/contact"
+                  className={cn(
+                    "group mt-6 flex items-center justify-between rounded-full border px-5 py-3 text-[13px] font-bold transition",
+                    tier.popular
+                      ? "border-marigold bg-marigold text-ink hover:bg-[#e6d000]"
+                      : "border-ink bg-ink text-parchment hover:bg-[#1b4d14]"
+                  )}
+                >
+                  {tier.cta}
+                  <ArrowRight
+                    className={cn(
+                      "h-4 w-4 transition-transform group-hover:translate-x-1",
+                      tier.popular ? "text-ink" : "text-marigold"
+                    )}
+                  />
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

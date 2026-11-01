@@ -1,13 +1,26 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Bot, Phone, MessageSquare, Mail, ArrowRight, CheckCircle2, ShieldCheck, User, ArrowDown } from "lucide-react";
+import {
+  Bot,
+  Phone,
+  MessageSquare,
+  Mail,
+  CheckCircle2,
+  ShieldCheck,
+  User,
+  ArrowDown,
+  Sparkles,
+} from "lucide-react";
 import RelatedSolutions from "@/components/solutions/RelatedSolutions";
 import SolutionPricing from "@/components/solutions/SolutionPricing";
-import UnderlineButton from "@/components/UnderlineButton";
+import {
+  NumberBadge,
+  SolutionFinalCTA,
+  SolutionHead,
+  SolutionHero,
+  SolutionSection,
+} from "@/components/solutions/SolutionUI";
+import { RoundCactus, Sparkle } from "@/components/brand/Botanical";
 
 const relatedSolutions = [
   { title: "Conversation Funnels", description: "Turn visitors into qualified leads with guided chat flows.", href: "/solutions/conversation-funnels" },
@@ -16,10 +29,10 @@ const relatedSolutions = [
 ];
 
 const channels = [
-  { icon: MessageSquare, label: "Website Chat", color: "bg-blue-500/10 text-blue-500" },
-  { icon: Phone, label: "Phone Call", color: "bg-green-500/10 text-green-500" },
-  { icon: MessageSquare, label: "WhatsApp", color: "bg-emerald-500/10 text-emerald-500" },
-  { icon: Mail, label: "Email", color: "bg-orange-500/10 text-orange-500" },
+  { icon: MessageSquare, label: "Website Chat", tint: "bg-sage text-ink" },
+  { icon: Phone, label: "Phone Call", tint: "bg-marigold text-ink" },
+  { icon: MessageSquare, label: "WhatsApp", tint: "bg-parchment text-ink" },
+  { icon: Mail, label: "Email", tint: "bg-cream text-ink" },
 ];
 
 const features = [
@@ -38,19 +51,28 @@ function HandoffDiagram() {
     { label: "Needs human?", sub: "complex or sensitive case", highlight: false },
     { label: "Passes full context to team", sub: "no repeat, no delay", highlight: true },
   ];
+
   return (
-    <div className="max-w-md mx-auto flex flex-col items-center gap-0">
+    <div className="mx-auto flex max-w-md flex-col items-center gap-0">
       {steps.map((step, i) => (
-        <div key={i} className="flex flex-col items-center w-full">
-          <div className={`w-full px-6 py-4 rounded-2xl border text-center transition-all ${step.highlight ? "border-primary/40 bg-primary/5" : "border-border bg-background"} shadow-sm`}>
-            <p className="font-semibold text-sm">{step.label}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{step.sub}</p>
+        <div key={i} className="flex w-full flex-col items-center">
+          <div
+            className={`w-full rounded-[24px] border px-6 py-4 text-center transition-all ${
+              step.highlight
+                ? "border-marigold bg-marigold text-ink"
+                : "border-paper/25 bg-paper/[0.06] text-paper"
+            }`}
+          >
+            <p className="display text-[20px] uppercase leading-none">{step.label}</p>
+            <p className={`mt-1.5 text-[11px] font-semibold ${step.highlight ? "text-ink/60" : "text-paper/55"}`}>
+              {step.sub}
+            </p>
           </div>
           {i < steps.length - 1 && (
             <div className="flex flex-col items-center py-1">
-              <div className="w-0.5 h-3 bg-border" />
-              <ArrowDown className="w-4 h-4 text-primary" />
-              <div className="w-0.5 h-3 bg-border" />
+              <div className="h-3 w-px bg-paper/25" />
+              <ArrowDown className="h-4 w-4 text-marigold" />
+              <div className="h-3 w-px bg-paper/25" />
             </div>
           )}
         </div>
@@ -61,24 +83,45 @@ function HandoffDiagram() {
 
 function AvailabilityBar() {
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div>
-        <div className="flex justify-between text-sm mb-2">
-          <span className="font-medium flex items-center gap-2"><User className="w-4 h-4" /> Human Team</span>
-          <span className="text-muted-foreground">8 hrs / day</span>
+    <div className="stamp mx-auto max-w-2xl rounded-[40px] border border-ink bg-parchment p-6 sm:p-8">
+      <div className="mb-6 flex items-end justify-between border-b border-ink/15 pb-4">
+        <div>
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-ink/45">
+            Coverage
+          </p>
+          <p className="display mt-1 text-[28px] uppercase leading-none">Always available</p>
         </div>
-        <div className="h-4 rounded-full bg-muted overflow-hidden">
-          <div className="h-full w-[33%] rounded-full bg-muted-foreground/30" />
+        <Sparkle className="h-5 w-5 text-ink/30" />
+      </div>
+
+      <div className="space-y-6">
+        <div>
+          <div className="mb-2 flex justify-between text-sm">
+            <span className="flex items-center gap-2 font-bold">
+              <User className="h-4 w-4 text-ink/50" /> Human Team
+            </span>
+            <span className="text-ink/55">8 hrs / day</span>
+          </div>
+          <div className="h-4 overflow-hidden rounded-full border border-ink/15 bg-sage/60">
+            <div className="h-full w-[33%] rounded-full bg-ink/30" />
+          </div>
+        </div>
+        <div>
+          <div className="mb-2 flex justify-between text-sm">
+            <span className="flex items-center gap-2 font-bold">
+              <Bot className="h-4 w-4 text-ink" /> AI Assistant
+            </span>
+            <span className="font-bold text-ink">24 hrs / day</span>
+          </div>
+          <div className="h-4 overflow-hidden rounded-full border border-ink/15 bg-sage/60">
+            <div className="h-full w-full rounded-full bg-ink" />
+          </div>
         </div>
       </div>
-      <div>
-        <div className="flex justify-between text-sm mb-2">
-          <span className="font-medium flex items-center gap-2"><Bot className="w-4 h-4 text-primary" /> AI Assistant</span>
-          <span className="text-primary font-semibold">24 hrs / day</span>
-        </div>
-        <div className="h-4 rounded-full bg-muted overflow-hidden">
-          <div className="h-full w-full rounded-full bg-primary" />
-        </div>
+
+      <div className="mt-6 flex items-center gap-2 border-t border-ink/15 pt-4 text-[11px] font-bold uppercase tracking-[0.1em] text-ink/55">
+        <CheckCircle2 className="h-3.5 w-3.5" />
+        No missed calls, no after-hours gaps
       </div>
     </div>
   );
@@ -86,164 +129,145 @@ function AvailabilityBar() {
 
 export default function AIAgentsPage() {
   return (
-    <div className="flex flex-col items-center w-full min-h-screen bg-background relative">
-      {/* Back Button */}
-      <div className="absolute top-4 left-6 z-10 hidden md:block">
-        <UnderlineButton />
-      </div>
-
-      {/* Hero */}
-      <section className="w-full py-20 lg:py-32 px-4">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <Badge variant="secondary" className="mb-6 py-1.5 px-4 rounded-full border border-primary/20 text-primary font-medium">
-              AI Agents & Voice Assistants
-            </Badge>
-            <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              AI Team Members Working <span className="text-primary">24/7</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-              Answer questions, take calls, qualify leads, and book appointments automatically.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Button size="lg" className="rounded-full text-lg h-14 px-8" asChild>
-                <Link href="/contact">Book Free Call <ArrowRight className="ml-2 w-5 h-5" /></Link>
-              </Button>
-              <Button size="lg" variant="outline" className="rounded-full text-lg h-14 px-8" asChild>
-                <Link href="/#pricing">Get Quote</Link>
-              </Button>
+    <div className="flex w-full flex-col items-center overflow-x-clip bg-paper">
+      <SolutionHero
+        eyebrow="AI Agents & Voice Assistants"
+        title={
+          <>
+            AI Team Members Working <span className="italic">24/7</span>
+          </>
+        }
+        description="Answer questions, take calls, qualify leads, and book appointments automatically."
+        bullets={["24/7 Availability", "Fast Setup", "Custom Workflows"]}
+        visual={
+          <div className="stamp relative overflow-hidden rounded-[40px] border border-ink bg-parchment p-5 sm:p-6">
+            <RoundCactus className="pointer-events-none absolute -bottom-7 -right-3 h-28 w-24 rotate-[8deg] text-ink/10" />
+            <div className="flex items-center justify-between border-b border-ink/15 pb-4">
+              <span className="pill pill-marigold">
+                <Sparkles className="h-3 w-3" />
+                Live coverage
+              </span>
+              <span className="display text-[34px] leading-none">24/7</span>
             </div>
-            <div className="flex flex-wrap gap-5 text-sm font-medium text-muted-foreground">
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> 24/7 Availability</span>
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> Fast Setup</span>
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> Custom Workflows</span>
-            </div>
-          </div>
-          {/* Channel cards */}
-          <div className="hidden lg:grid grid-cols-2 gap-4">
-            {channels.map((ch, i) => (
-              <div key={i} className={`flex items-center gap-3 p-5 rounded-2xl border border-border/50 bg-background shadow-sm hover:shadow-md hover:border-primary/30 transition-all`}>
-                <div className={`p-2.5 rounded-xl ${ch.color}`}>
-                  <ch.icon className="w-5 h-5" />
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {channels.map((ch, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 rounded-[24px] border border-ink/20 bg-cream/60 p-3.5 transition hover:-translate-y-0.5 hover:border-ink/40"
+                >
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/20 ${ch.tint}`}>
+                    <ch.icon className="h-4 w-4" />
+                  </div>
+                  <span className="text-[12.5px] font-bold leading-tight">{ch.label}</span>
                 </div>
-                <span className="font-medium text-sm">{ch.label}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="mt-4 flex items-center gap-2 rounded-[20px] border border-ink/15 bg-sage/70 px-3.5 py-2.5">
+              <span className="h-2 w-2 rounded-full bg-ink" />
+              <p className="text-[11px] font-bold text-ink/65">Every conversation logged and routed</p>
+            </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
-      {/* What Happens Without AI */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">What Happens Without AI</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {["Missed calls after hours", "Slow replies lose leads", "Staff answering same questions", "Follow-ups forgotten"].map((pain, i) => (
-              <Card key={i} className="border-border/50 bg-background/50 shadow-sm">
-                <CardContent className="p-6 flex items-start gap-4">
-                  <div className="w-2 h-2 rounded-full bg-destructive mt-2 shrink-0" />
-                  <p className="font-medium text-sm">{pain}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+      <SolutionSection band="sage">
+        <SolutionHead
+          eyebrow="The gap"
+          title="What Happens Without AI"
+          description="Every unanswered call and slow reply is a customer choosing someone faster."
+        />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {["Missed calls after hours", "Slow replies lose leads", "Staff answering same questions", "Follow-ups forgotten"].map((pain, i) => (
+            <div key={i} className="flex items-start gap-4 rounded-[28px] border border-ink/25 bg-parchment p-5">
+              <NumberBadge>{String(i + 1).padStart(2, "0")}</NumberBadge>
+              <p className="text-[13px] font-bold leading-snug text-ink/80">{pain}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
 
-      {/* What AI Handles */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">What AI Handles</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <Card key={i} className="border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
-                <CardHeader>
-                  <CardTitle className="text-base">{f.title}</CardTitle>
-                  <CardDescription>{f.desc}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+      <SolutionSection>
+        <SolutionHead
+          eyebrow="Coverage"
+          title="What AI Handles"
+          description="The repetitive work that eats your day, handled instantly and consistently."
+        />
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
+            <div
+              key={i}
+              className="group flex flex-col rounded-[32px] border border-ink/25 bg-parchment p-6 transition hover:-translate-y-1 hover:border-ink"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 bg-marigold">
+                <CheckCircle2 className="h-4 w-4 text-ink" />
+              </span>
+              <h3 className="mt-4 text-[22px] uppercase leading-none">{f.title}</h3>
+              <p className="mt-2 text-[12.5px] font-medium leading-relaxed text-ink/60">{f.desc}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
 
-      {/* Human + AI Handoff */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Human + AI Handoff</h2>
-            <p className="text-muted-foreground text-lg">AI handles the routine. Humans step in when it matters.</p>
-          </div>
-          <HandoffDiagram />
-        </div>
-      </section>
+      <SolutionSection band="forest">
+        <SolutionHead
+          tone="forest"
+          eyebrow="Escalation"
+          title="Human + AI Handoff"
+          description="AI handles the routine. Humans step in when it matters."
+        />
+        <HandoffDiagram />
+      </SolutionSection>
 
-      {/* Availability Comparison */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Always Available</h2>
-            <p className="text-muted-foreground text-lg">Human hours vs AI 24/7 coverage</p>
-          </div>
-          <AvailabilityBar />
-        </div>
-      </section>
+      <SolutionSection>
+        <SolutionHead
+          eyebrow="Uptime"
+          title="Always Available"
+          description="Human hours vs AI 24/7 coverage."
+        />
+        <AvailabilityBar />
+      </SolutionSection>
 
-      {/* Industries */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Industries We Serve</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { label: "Clinic", desc: "Voice assistant answers calls, shares timings, books appointments." },
-              { label: "Real Estate", desc: "Agent handles inquiries, collects budget, schedules callbacks." },
-              { label: "Agency", desc: "Website assistant qualifies leads and routes service requests." },
-              { label: "Ecommerce", desc: "Support agent answers shipping, returns, and product questions." },
-              { label: "Services", desc: "AI assistant handles FAQs, quotes, and booking requests." },
-            ].map((u, i) => (
-              <Card key={i} className="bg-muted/20 border-none shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <Badge className="w-fit mb-2">{u.label}</Badge>
-                  <CardDescription className="text-sm leading-relaxed">{u.desc}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+      <SolutionSection band="sage">
+        <SolutionHead
+          eyebrow="Use cases"
+          title="Industries We Serve"
+          description="Trained on your services, timings, pricing and tone of voice."
+        />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { label: "Clinic", desc: "Voice assistant answers calls, shares timings, books appointments." },
+            { label: "Real Estate", desc: "Agent handles inquiries, collects budget, schedules callbacks." },
+            { label: "Agency", desc: "Website assistant qualifies leads and routes service requests." },
+            { label: "Ecommerce", desc: "Support agent answers shipping, returns, and product questions." },
+            { label: "Services", desc: "AI assistant handles FAQs, quotes, and booking requests." },
+          ].map((u, i) => (
+            <div key={i} className="rounded-[32px] border border-ink/25 bg-parchment p-6">
+              <span className="pill pill-marigold">{u.label}</span>
+              <p className="mt-4 text-[13px] font-medium leading-relaxed text-ink/65">{u.desc}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
 
-      {/* Why Us */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Why Work With Us</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: "Custom Solutions", desc: "Not generic bots. Your agent is trained for your business." },
-              { title: "Modern Tech", desc: "Built on proven AI infrastructure with reliable performance." },
-              { title: "Real Experience", desc: "We have built agents for real business workflows." },
-              { title: "Fast Setup", desc: "Most agents are live within 2 to 3 weeks." },
-              { title: "Clean UX", desc: "Natural, helpful conversations your customers enjoy." },
-              { title: "Ongoing Support", desc: "We retrain and improve the agent over time." },
-            ].map((item, i) => (
-              <Card key={i} className="border-border/50 shadow-sm">
-                <CardHeader>
-                  <ShieldCheck className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                  <CardDescription className="text-base">{item.desc}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+      <SolutionSection>
+        <SolutionHead eyebrow="Why us" title="Why Work With Us" />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { title: "Custom Solutions", desc: "Not generic bots. Your agent is trained for your business." },
+            { title: "Modern Tech", desc: "Built on proven AI infrastructure with reliable performance." },
+            { title: "Real Experience", desc: "We have built agents for real business workflows." },
+            { title: "Fast Setup", desc: "Most agents are live within 2 to 3 weeks." },
+            { title: "Clean UX", desc: "Natural, helpful conversations your customers enjoy." },
+            { title: "Ongoing Support", desc: "We retrain and improve the agent over time." },
+          ].map((item, i) => (
+            <div key={i} className="rounded-[32px] border border-ink/25 bg-parchment p-6">
+              <ShieldCheck className="h-6 w-6 text-ink/70" />
+              <h3 className="mt-4 text-[22px] uppercase leading-none">{item.title}</h3>
+              <p className="mt-2 text-[12.5px] font-medium leading-relaxed text-ink/60">{item.desc}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
 
       <RelatedSolutions solutions={relatedSolutions} />
 
@@ -255,21 +279,10 @@ export default function AIAgentsPage() {
         }}
       />
 
-      {/* Final CTA */}
-      <section className="w-full py-24 px-4 text-center">
-        <div className="max-w-3xl mx-auto bg-primary/5 border border-primary/20 rounded-3xl p-12 shadow-sm">
-          <h2 className="text-4xl font-bold mb-6">Build Your AI Assistant</h2>
-          <p className="text-xl text-muted-foreground mb-10">Let&apos;s build an AI assistant that saves time and helps your business grow.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="rounded-full h-14 px-8 text-lg" asChild>
-              <Link href="/contact">Book Free Call</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full h-14 px-8 text-lg bg-background" asChild>
-              <Link href="/#pricing">Get Quote</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <SolutionFinalCTA
+        title="Build Your AI Assistant"
+        description="Let's build an AI assistant that saves time and helps your business grow."
+      />
     </div>
   );
 }

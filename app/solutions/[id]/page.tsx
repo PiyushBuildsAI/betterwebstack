@@ -1,8 +1,9 @@
 import { solutions } from "@/lib/data/solutions";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import UnderlineButton from "@/components/UnderlineButton";
+import { Check, Sparkle } from "lucide-react";
+import { Cactus } from "@/components/brand/Botanical";
 
 export function generateStaticParams() {
   return solutions.map((solution) => ({
@@ -21,7 +22,11 @@ function renderContent(text: string) {
       parts.push(text.substring(lastIndex, match.index));
     }
     parts.push(
-      <Link key={lastIndex} href={match[2]} className="text-primary font-semibold hover:underline underline-offset-4 decoration-primary/50 transition-colors">
+      <Link
+        key={lastIndex}
+        href={match[2]}
+        className="font-semibold text-ink underline decoration-ink/30 underline-offset-4 transition hover:decoration-ink"
+      >
         {match[1]}
       </Link>
     );
@@ -46,54 +51,70 @@ export default async function SolutionPage({ params }: { params: Promise<{ id: s
   const Icon = solution.icon;
 
   return (
-    <div className="container mx-auto max-w-4xl py-16 px-4 md:py-24">
-      <div className="mb-8">
-        <Button variant="ghost" asChild className="mb-8 -ml-4">
-          <Link href="/#solutions">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Solutions
-          </Link>
-        </Button>
-        <div className="flex items-center gap-4 mb-6">
-          <div className={`p-4 rounded-xl bg-muted/50 ${solution.color}`}>
-            <Icon className="h-8 w-8" />
+    <div className="bg-paper">
+      <section className="relative overflow-hidden px-5 pb-12 pt-28 sm:px-8 sm:pt-32">
+        <div className="pointer-events-none absolute inset-0 sunlit-dots opacity-20 [mask-image:radial-gradient(ellipse_at_50%_0%,black_0%,transparent_70%)]" />
+        <div className="relative mx-auto max-w-4xl">
+          <UnderlineButton href="/solutions" label="All solutions" />
+
+          <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[20px] border border-ink bg-marigold">
+              <Icon className="h-6 w-6 text-ink" />
+            </span>
+            <div>
+              <span className="pill">
+                <Sparkle className="h-3 w-3 text-ink/60" />
+                {solution.badge}
+              </span>
+              <h1 className="display-bold mt-3 max-w-[16ch] text-[44px] uppercase leading-[0.9] sm:text-[58px]">
+                {solution.title}
+              </h1>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{solution.title}</h1>
-        </div>
-      </div>
 
-      <div className="prose prose-lg dark:prose-invert max-w-none">
-        <p className="text-xl text-muted-foreground leading-relaxed font-medium">
-          {solution.description}
-        </p>
-        
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-          <p className="text-muted-foreground leading-relaxed">
-            {renderContent(solution.detailedContent)}
+          <p className="mt-6 max-w-2xl text-[15px] font-medium leading-relaxed text-ink/65">
+            {solution.description}
           </p>
         </div>
+      </section>
 
-        <h2 className="text-2xl font-semibold mt-12 mb-6">Key Benefits</h2>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none pl-0">
-          {solution.benefits.map((benefit, idx) => (
-            <li key={idx} className="flex items-center p-4 rounded-lg bg-card border border-border m-0">
-              <div className={`mr-3 h-2 w-2 rounded-full bg-current ${solution.color}`} />
-              <span className="font-medium">{benefit}</span>
-            </li>
-          ))}
-        </ul>
+      <section className="px-5 pb-20 sm:px-8">
+        <div className="stamp relative mx-auto max-w-4xl overflow-hidden rounded-[40px] border border-ink bg-parchment p-6 sm:p-10">
+          <Cactus className="pointer-events-none absolute -bottom-8 -right-4 h-40 w-28 text-ink/[0.06]" />
 
-        <div className="mt-16 bg-muted/30 p-8 rounded-2xl border border-border/50 text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-muted-foreground mb-8">
-            Let's discuss how our {solution.title} services can help your business grow.
-          </p>
-          <Button size="lg" asChild>
-            <Link href="/contact">Contact Us Today</Link>
-          </Button>
+          <div className="relative">
+            <h2 className="text-[30px] uppercase leading-none">Overview</h2>
+            <p className="mt-3 text-[14px] font-medium leading-relaxed text-ink/65">
+              {renderContent(solution.detailedContent)}
+            </p>
+
+            <h2 className="mt-10 text-[30px] uppercase leading-none">Key Benefits</h2>
+            <ul className="mt-4 grid list-none grid-cols-1 gap-3 pl-0 md:grid-cols-2">
+              {solution.benefits.map((benefit, idx) => (
+                <li
+                  key={idx}
+                  className="m-0 flex items-center gap-3 rounded-[20px] border border-ink/20 bg-cream/60 px-4 py-3"
+                >
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-marigold">
+                    <Check className="h-3 w-3 text-ink" strokeWidth={4} />
+                  </span>
+                  <span className="text-[13px] font-semibold">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-10 rounded-[32px] border border-ink bg-sage px-6 py-8 text-center">
+              <h2 className="text-[28px] uppercase leading-none">Ready to get started?</h2>
+              <p className="mx-auto mt-3 max-w-md text-[13px] font-medium leading-relaxed text-ink/60">
+                Let&apos;s discuss how our {solution.title} services can help your business grow.
+              </p>
+              <Link href="/contact" className="btn-ink mt-6">
+                Contact Us Today
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export const contactFeatures: ContactFeature[] = [
     {
         icon: (
             <svg
-        className= "w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground"
+        className= "w-5 h-5 sm:w-6 sm:h-6 text-ink"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -28,7 +28,7 @@ description: "Quick response time - we typically reply within 24 hours.",
 {
     icon: (
         <svg
-        className= "w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground"
+        className= "w-5 h-5 sm:w-6 sm:h-6 text-ink"
     fill = "none"
     viewBox = "0 0 24 24"
     stroke = "currentColor"
