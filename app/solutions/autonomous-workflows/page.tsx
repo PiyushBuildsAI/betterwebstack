@@ -1,14 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, CheckCircle2, ShieldCheck, Clock, UserCheck, Database, Mail, Bell, CheckSquare, BarChart2, Layers, Puzzle } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  Clock,
+  UserCheck,
+  Database,
+  Mail,
+  Bell,
+  CheckSquare,
+  BarChart2,
+  Puzzle,
+} from "lucide-react";
 import RelatedSolutions from "@/components/solutions/RelatedSolutions";
 import SolutionPricing from "@/components/solutions/SolutionPricing";
-import UnderlineButton from "@/components/UnderlineButton";
+import {
+  SolutionFinalCTA,
+  SolutionHead,
+  SolutionHero,
+  SolutionSection,
+} from "@/components/solutions/SolutionUI";
+import { Sparkle, SunBurst } from "@/components/brand/Botanical";
 
 const relatedSolutions = [
   { title: "AI Agents & Voice Assistants", description: "Automate conversations and handle leads around the clock.", href: "/solutions/ai-agents" },
@@ -45,22 +58,25 @@ const departmentWorkflows: Record<string, { steps: string[]; desc: string }> = {
   },
 };
 
-const integrations = [
-  { name: "CRM", color: "bg-blue-500/10 text-blue-600" },
-  { name: "Email", color: "bg-red-500/10 text-red-500" },
-  { name: "Sheets", color: "bg-green-500/10 text-green-600" },
-  { name: "Slack", color: "bg-purple-500/10 text-purple-600" },
-  { name: "WhatsApp", color: "bg-emerald-500/10 text-emerald-600" },
-  { name: "Internal Tools", color: "bg-orange-500/10 text-orange-500" },
-];
+const integrations = ["CRM", "Email", "Sheets", "Slack", "WhatsApp", "Internal Tools"];
 
-function WorkflowMap({ steps }: { steps: string[] }) {
+function WorkflowMap({ steps, light = false }: { steps: string[]; light?: boolean }) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+    <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
       {steps.map((step, i) => (
         <div key={i} className="flex items-center gap-2">
-          <div className="px-4 py-2 rounded-xl border border-primary/30 bg-primary/5 text-xs font-medium">{step}</div>
-          {i < steps.length - 1 && <ArrowRight className="w-3.5 h-3.5 text-primary shrink-0" />}
+          <div
+            className={`rounded-full border px-3.5 py-2 text-[11px] font-bold ${
+              light
+                ? "border-paper/25 bg-paper/[0.06] text-paper"
+                : "border-ink/25 bg-cream text-ink"
+            }`}
+          >
+            {step}
+          </div>
+          {i < steps.length - 1 && (
+            <ArrowRight className={`h-3.5 w-3.5 shrink-0 ${light ? "text-marigold" : "text-ink/35"}`} />
+          )}
         </div>
       ))}
     </div>
@@ -73,15 +89,22 @@ function TimeSavedEstimator() {
   const hoursSaved = Math.round((tasks * minutesPerTask * 5) / 60);
 
   return (
-    <Card className="max-w-lg mx-auto border-primary/20 shadow-lg">
-      <CardHeader className="text-center">
-        <Clock className="w-8 h-8 text-primary mx-auto mb-2" />
-        <CardTitle className="text-xl">Time Saved Estimator</CardTitle>
-        <CardDescription>See how much time automation could save your team weekly.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-5">
+    <div className="stamp mx-auto max-w-lg overflow-hidden rounded-[40px] border border-ink bg-parchment">
+      <div className="border-b border-ink/15 bg-sage/60 p-6 text-center">
+        <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-ink/20 bg-marigold">
+          <Clock className="h-5 w-5 text-ink" />
+        </span>
+        <h3 className="mt-3 text-[26px] uppercase leading-none">Time Saved Estimator</h3>
+        <p className="mt-2 text-[12.5px] font-medium text-ink/60">
+          See how much time automation could save your team weekly.
+        </p>
+      </div>
+      <div className="space-y-5 p-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Repetitive tasks per day</label>
+          <label className="flex items-center justify-between text-[12px] font-bold">
+            <span>Repetitive tasks per day</span>
+            <span className="pill pill-sage">{tasks}</span>
+          </label>
           <input
             type="range"
             min={1}
@@ -90,10 +113,13 @@ function TimeSavedEstimator() {
             onChange={(e) => setTasks(Number(e.target.value))}
             className="w-full accent-primary"
           />
-          <p className="text-sm text-muted-foreground text-center">{tasks} tasks / day</p>
+          <p className="text-[11px] font-medium text-ink/50">tasks / day</p>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium">Minutes per task</label>
+          <label className="flex items-center justify-between text-[12px] font-bold">
+            <span>Minutes per task</span>
+            <span className="pill pill-sage">{minutesPerTask} min</span>
+          </label>
           <input
             type="range"
             min={1}
@@ -102,15 +128,19 @@ function TimeSavedEstimator() {
             onChange={(e) => setMinutesPerTask(Number(e.target.value))}
             className="w-full accent-primary"
           />
-          <p className="text-sm text-muted-foreground text-center">{minutesPerTask} min each</p>
+          <p className="text-[11px] font-medium text-ink/50">min each</p>
         </div>
-        <div className="pt-4 border-t text-center">
-          <p className="text-sm text-muted-foreground mb-1">Estimated hours saved per week</p>
-          <p className="text-5xl font-bold text-primary">{hoursSaved}h</p>
-          <p className="text-sm text-muted-foreground mt-1">That&apos;s {Math.round(hoursSaved / 40 * 100)}% of a full work week</p>
+        <div className="border-t border-ink/15 pt-4 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink/50">
+            Estimated hours saved per week
+          </p>
+          <p className="display mt-1 text-[56px] leading-none">{hoursSaved}h</p>
+          <p className="mt-1 text-[12px] font-medium text-ink/55">
+            That&apos;s {Math.round(hoursSaved / 40 * 100)}% of a full work week
+          </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -118,168 +148,159 @@ export default function AutonomousWorkflowsPage() {
   const [activeDept, setActiveDept] = useState("Sales");
 
   return (
-    <div className="flex flex-col items-center w-full min-h-screen bg-background relative">
-      {/* Back Button */}
-      <div className="absolute top-4 left-6 z-10 hidden md:block">
-        <UnderlineButton />
-      </div>
-
-      {/* Hero */}
-      <section className="w-full py-20 lg:py-32 px-4">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <Badge variant="secondary" className="mb-6 py-1.5 px-4 rounded-full border border-primary/20 text-primary font-medium">
-              Autonomous Workflows
-            </Badge>
-            <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Systems That Run <span className="text-primary">Without Constant Oversight</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-              Automate repetitive operations, reduce errors, and scale faster.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Button size="lg" className="rounded-full text-lg h-14 px-8" asChild>
-                <Link href="/contact">Book Free Call <ArrowRight className="ml-2 w-5 h-5" /></Link>
-              </Button>
-              <Button size="lg" variant="outline" className="rounded-full text-lg h-14 px-8" asChild>
-                <Link href="/#pricing">Get Quote</Link>
-              </Button>
+    <div className="flex w-full flex-col items-center overflow-x-clip bg-paper">
+      <SolutionHero
+        eyebrow="Autonomous Workflows"
+        title={
+          <>
+            Systems That Run <span className="italic">Without Constant Oversight</span>
+          </>
+        }
+        description="Automate repetitive operations, reduce errors, and scale faster."
+        bullets={["Saves Time", "Fewer Errors", "Built to Scale"]}
+        visual={
+          <div className="stamp relative overflow-hidden rounded-[40px] border border-ink bg-parchment p-5 sm:p-6">
+            <SunBurst className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 text-ink/[0.07]" />
+            <div className="flex items-center justify-between border-b border-ink/15 pb-4">
+              <span className="pill pill-marigold">
+                <Sparkle className="h-3 w-3" />
+                Workflow map
+              </span>
+              <span className="display text-[34px] leading-none">01</span>
             </div>
-            <div className="flex flex-wrap gap-5 text-sm font-medium text-muted-foreground">
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> Saves Time</span>
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> Fewer Errors</span>
-              <span className="flex items-center"><CheckCircle2 className="w-4 h-4 mr-2 text-primary" /> Built to Scale</span>
+            <div className="relative mt-4 rounded-[24px] border border-ink/15 bg-cream/60 p-4">
+              <WorkflowMap steps={["New Lead", "Check Rules", "Assign", "CRM Update", "Notify Team", "Follow-up"]} />
+            </div>
+            <div className="mt-4 flex items-center gap-2 rounded-[20px] border border-ink/15 bg-sage/70 px-3.5 py-2.5">
+              <span className="h-2 w-2 rounded-full bg-ink" />
+              <p className="text-[11px] font-bold text-ink/65">Runs quietly, logs every step</p>
             </div>
           </div>
-          {/* Workflow map animation */}
-          <div className="hidden lg:block">
-            <WorkflowMap steps={["New Lead", "Check Rules", "Assign", "CRM Update", "Notify Team", "Follow-up"]} />
-          </div>
-        </div>
-      </section>
+        }
+      />
 
-      {/* Where Time Gets Lost */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Where Time Gets Lost</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {["Manual entry", "Missed handoffs", "Slow approvals", "Repeated admin work"].map((pain, i) => (
-              <Card key={i} className="border-destructive/20 bg-destructive/5 shadow-sm">
-                <CardContent className="p-6 flex items-start gap-4">
-                  <Clock className="w-5 h-5 text-destructive mt-0.5 shrink-0" />
-                  <p className="font-medium text-sm">{pain}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What We Automate */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">What We Automate</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((f, i) => (
-              <Card key={i} className="border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
-                <CardHeader>
-                  <f.icon className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-base">{f.title}</CardTitle>
-                  <CardDescription className="text-sm">{f.desc}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Department Workflow Tabs */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Department Workflow Examples</h2>
-            <p className="text-muted-foreground text-lg">See how automation applies to different teams.</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {Object.keys(departmentWorkflows).map((dept) => (
-              <button
-                key={dept}
-                onClick={() => setActiveDept(dept)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                  activeDept === dept
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "bg-background border border-border hover:border-primary/30"
-                }`}
-              >
-                {dept}
-              </button>
-            ))}
-          </div>
-          <Card className="border-border/50 shadow-md">
-            <CardContent className="p-8">
-              <p className="text-muted-foreground text-center mb-6">{departmentWorkflows[activeDept].desc}</p>
-              <WorkflowMap steps={departmentWorkflows[activeDept].steps} />
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Time Saved Estimator */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">How Much Time Could You Save?</h2>
-          </div>
-          <TimeSavedEstimator />
-        </div>
-      </section>
-
-      {/* Integration Grid */}
-      <section className="w-full py-24 bg-muted/30 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Connects With Your Tools</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {integrations.map((int, i) => (
-              <div key={i} className={`flex items-center justify-center p-5 rounded-2xl border border-border/50 bg-background shadow-sm hover:shadow-md hover:border-primary/30 transition-all`}>
-                <div className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${int.color}`}>{int.name}</div>
+      <SolutionSection band="sage">
+        <SolutionHead
+          eyebrow="The leak"
+          title="Where Time Gets Lost"
+          description="Small manual gaps compound into days of lost capacity every month."
+        />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {["Manual entry", "Missed handoffs", "Slow approvals", "Repeated admin work"].map((pain, i) => (
+            <div key={i} className="flex items-start gap-4 rounded-[28px] border border-ink/25 bg-parchment p-5">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 bg-marigold">
+                <Clock className="h-4 w-4 text-ink" />
+              </span>
+              <div>
+                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-ink/40">
+                  0{i + 1}
+                </p>
+                <p className="mt-1 text-[13px] font-bold leading-snug text-ink/80">{pain}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
 
-      {/* Why Us */}
-      <section className="w-full py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Why Work With Us</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: "Business-First", desc: "Every workflow is designed around your actual operations." },
-              { title: "Hands-on Experience", desc: "We have built real automation systems across industries." },
-              { title: "Custom Solutions", desc: "No generic templates. Everything fits your process." },
-              { title: "Clean Integrations", desc: "We connect your tools without technical headaches." },
-              { title: "Fast Setup", desc: "Most workflows are live within 2 to 4 weeks." },
-              { title: "Ongoing Support", desc: "We adjust and improve as your business changes." },
-            ].map((item, i) => (
-              <Card key={i} className="border-border/50 shadow-sm">
-                <CardHeader>
-                  <ShieldCheck className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                  <CardDescription className="text-base">{item.desc}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+      <SolutionSection>
+        <SolutionHead
+          eyebrow="Automation"
+          title="What We Automate"
+          description="The connective tissue between your tools, your team and your customers."
+        />
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((f, i) => (
+            <div
+              key={i}
+              className="flex flex-col rounded-[32px] border border-ink/25 bg-parchment p-5 transition hover:-translate-y-1 hover:border-ink"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 bg-marigold">
+                <f.icon className="h-4 w-4 text-ink" />
+              </span>
+              <h3 className="mt-4 text-[21px] uppercase leading-none">{f.title}</h3>
+              <p className="mt-2 text-[12px] font-medium leading-relaxed text-ink/60">{f.desc}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </SolutionSection>
+
+      <SolutionSection band="forest">
+        <SolutionHead
+          tone="forest"
+          eyebrow="By team"
+          title="Department Workflow Examples"
+          description="See how automation applies to different teams."
+        />
+        <div className="mb-7 flex flex-wrap justify-center gap-2">
+          {Object.keys(departmentWorkflows).map((dept) => (
+            <button
+              key={dept}
+              onClick={() => setActiveDept(dept)}
+              className={`rounded-full border px-5 py-2.5 text-[12px] font-bold transition ${
+                activeDept === dept
+                  ? "border-marigold bg-marigold text-ink"
+                  : "border-paper/25 bg-transparent text-paper/70 hover:border-paper/60 hover:text-paper"
+              }`}
+            >
+              {dept}
+            </button>
+          ))}
+        </div>
+        <div className="mx-auto max-w-4xl rounded-[40px] border border-paper/20 bg-paper/[0.06] p-6 sm:p-8">
+          <p className="mb-2 text-center text-[13px] font-medium leading-relaxed text-paper/65">
+            {departmentWorkflows[activeDept].desc}
+          </p>
+          <WorkflowMap steps={departmentWorkflows[activeDept].steps} light />
+        </div>
+      </SolutionSection>
+
+      <SolutionSection>
+        <SolutionHead
+          eyebrow="Estimate"
+          title="How Much Time Could You Save?"
+          description="A quick estimate based on the repetitive work your team handles."
+        />
+        <TimeSavedEstimator />
+      </SolutionSection>
+
+      <SolutionSection band="sage">
+        <SolutionHead
+          eyebrow="Integrations"
+          title="Connects With Your Tools"
+          description="We wire your existing stack together instead of replacing it."
+        />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {integrations.map((int, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-center gap-2 rounded-[24px] border border-ink/25 bg-parchment p-5 transition hover:-translate-y-0.5 hover:border-ink"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-ink/40" />
+              <span className="text-[12px] font-bold">{int}</span>
+            </div>
+          ))}
+        </div>
+      </SolutionSection>
+
+      <SolutionSection>
+        <SolutionHead eyebrow="Why us" title="Why Work With Us" />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { title: "Business-First", desc: "Every workflow is designed around your actual operations." },
+            { title: "Hands-on Experience", desc: "We have built real automation systems across industries." },
+            { title: "Custom Solutions", desc: "No generic templates. Everything fits your process." },
+            { title: "Clean Integrations", desc: "We connect your tools without technical headaches." },
+            { title: "Fast Setup", desc: "Most workflows are live within 2 to 4 weeks." },
+            { title: "Ongoing Support", desc: "We adjust and improve as your business changes." },
+          ].map((item, i) => (
+            <div key={i} className="rounded-[32px] border border-ink/25 bg-parchment p-6">
+              <ShieldCheck className="h-6 w-6 text-ink/70" />
+              <h3 className="mt-4 text-[22px] uppercase leading-none">{item.title}</h3>
+              <p className="mt-2 text-[12.5px] font-medium leading-relaxed text-ink/60">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </SolutionSection>
 
       <RelatedSolutions solutions={relatedSolutions} />
 
@@ -291,21 +312,10 @@ export default function AutonomousWorkflowsPage() {
         }}
       />
 
-      {/* Final CTA */}
-      <section className="w-full py-24 px-4 text-center">
-        <div className="max-w-3xl mx-auto bg-primary/5 border border-primary/20 rounded-3xl p-12 shadow-sm">
-          <h2 className="text-4xl font-bold mb-6">Automate the Work Slowing Growth</h2>
-          <p className="text-xl text-muted-foreground mb-10">Let&apos;s build workflows that save time, reduce friction, and help your business scale.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="rounded-full h-14 px-8 text-lg" asChild>
-              <Link href="/contact">Book Free Call</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full h-14 px-8 text-lg bg-background" asChild>
-              <Link href="/#pricing">Get Quote</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <SolutionFinalCTA
+        title="Automate the Work Slowing Growth"
+        description="Let's build workflows that save time, reduce friction, and help your business scale."
+      />
     </div>
   );
 }

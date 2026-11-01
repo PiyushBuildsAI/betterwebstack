@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { NavbarDemo } from "@/components/Navbar";
+import FooterSection from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Contact Us | BetterWebStack",
@@ -18,6 +20,11 @@ export default function ContactLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <div className="flex min-h-screen flex-col bg-paper">
+      <NavbarDemo />
+      <main className="flex-1">{children}</main>
+      <FooterSection />
+    </div>
+  );
 }
-

@@ -2,32 +2,24 @@ import { VercelCard } from "./VercelCard"
 
 export function BlogCardSkeleton() {
   return (
-    <VercelCard animateOnHover={false} glowEffect={false} className="bg-background">
-      <article className="p-6 md:p-8 h-full animate-pulse">
-        <div className="flex items-start justify-between mb-6">
-          {/* Icon skeleton */}
-          <div className="h-8 w-8 bg-muted rounded" />
-          {/* Date skeleton */}
-          <div className="h-4 w-16 bg-muted rounded" />
-        </div>
-        
-        {/* Title skeleton */}
-        <div className="space-y-2 mb-4">
-          <div className="h-6 bg-muted rounded w-3/4" />
-          <div className="h-6 bg-muted rounded w-1/2" />
-        </div>
-        
-        {/* Description skeleton */}
-        <div className="space-y-2 mb-6">
-          <div className="h-4 bg-muted rounded w-full" />
-          <div className="h-4 bg-muted rounded w-full" />
-          <div className="h-4 bg-muted rounded w-5/6" />
-          <div className="h-4 bg-muted rounded w-4/6" />
-        </div>
-        
-        {/* Author skeleton */}
-        <div className="flex items-center gap-2">
-          <div className="h-4 bg-muted rounded w-32" />
+    <VercelCard showIcons={false} animateOnHover={false} glowEffect={false} className="bg-parchment" contentClassName="p-0">
+      <article className="h-full animate-pulse overflow-hidden">
+        <div className="h-48 w-full border-b border-ink/15 bg-sage" />
+        <div className="p-5">
+          <div className="mb-4 h-3 w-28 rounded-full bg-sage" />
+          <div className="space-y-2">
+            <div className="h-6 w-3/4 rounded-full bg-sage" />
+            <div className="h-6 w-1/2 rounded-full bg-sage" />
+          </div>
+          <div className="mt-5 space-y-2">
+            <div className="h-3 w-full rounded-full bg-sage/80" />
+            <div className="h-3 w-full rounded-full bg-sage/80" />
+            <div className="h-3 w-5/6 rounded-full bg-sage/80" />
+          </div>
+          <div className="mt-6 flex items-center gap-2 border-t border-ink/15 pt-4">
+            <div className="h-7 w-7 rounded-full bg-sage" />
+            <div className="h-3 w-32 rounded-full bg-sage" />
+          </div>
         </div>
       </article>
     </VercelCard>
@@ -36,7 +28,7 @@ export function BlogCardSkeleton() {
 
 export function BlogCardSkeletonGrid({ count = 6 }: { count?: number }) {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 py-8">
+    <section className="grid grid-cols-1 gap-4 py-8 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
       {Array.from({ length: count }).map((_, index) => (
         <BlogCardSkeleton key={index} />
       ))}
